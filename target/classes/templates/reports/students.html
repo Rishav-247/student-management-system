@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENT AUDIT REPORT // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        STUDENT AUDIT<br/>
+                        REPORT
+                    </h1>
+                    <div class="page-subtitle">10 // COMPREHENSIVE INSTITUTIONAL ROSTER</div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="window.print()" class="btn-brutal btn-brutal-lime">PRINT REPORT</button>
+                    <a th:href="@{/reports}" class="btn-brutal">← BACK</a>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>STUDENT ID</th>
+                            <th>NAME</th>
+                            <th>EMAIL</th>
+                            <th>DEPT</th>
+                            <th>COURSE</th>
+                            <th>SEM</th>
+                            <th>ATTENDANCE</th>
+                            <th>GPA</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${students}">
+                            <td class="mono font-weight-bold" th:text="${s.studentId}">CS20260041</td>
+                            <td style="font-weight: 700;" th:text="${s.fullName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${s.email}">rishav@univ.edu</td>
+                            <td class="mono" th:text="${s.departmentName}">CYS</td>
+                            <td class="mono" th:text="${s.courseName}">B.Tech Cyber Security</td>
+                            <td class="mono" th:text="${s.semester}">7</td>
+                            <td class="mono font-weight-bold"
+                                th:style="${s.attendanceRate < 75.0 ? 'color: var(--accent-red);' : ''}"
+                                th:text="${s.attendanceRate + '%'}">93.3%</td>
+                            <td class="mono font-weight-bold" th:text="${s.currentGpa}">8.85</td>
+                            <td><span class="badge-brutal badge-active" th:text="${s.status}">ACTIVE</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11 // SETTINGS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        SYSTEM<br/>
+                        SETTINGS
+                    </h1>
+                    <div class="page-subtitle">11 // SECURITY CREDENTIALS & PREFERENCES</div>
+                </div>
+            </div>
+
+            <!-- Profile Info Box -->
+            <div class="table-container" style="padding: 24px; margin-bottom: 32px;" th:if="${currentUser != null}">
+                <div class="table-title" style="margin-bottom: 16px; color: var(--text-main);">CURRENT ACTIVE SESSION</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                    <div>
+                        <div class="stat-label">USERNAME</div>
+                        <div class="mono font-weight-bold" style="font-size: 16px; margin-top: 4px;" th:text="${currentUser.username}">admin</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">ACCOUNT EMAIL</div>
+                        <div class="mono" style="font-size: 15px; margin-top: 4px;" th:text="${currentUser.email}">admin@univ.edu</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">ASSIGNED ROLE</div>
+                        <div class="mono font-weight-bold" style="font-size: 15px; margin-top: 4px;" th:text="${currentUser.role}">ROLE_ADMIN</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Password Card -->
+            <div class="form-card">
+                <div class="table-title" style="margin-bottom: 20px;">UPDATE SECURITY PASSWORD</div>
+                <form th:action="@{/settings/change-password}" method="post">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="oldPassword">CURRENT PASSWORD *</label>
+                            <input type="password" id="oldPassword" name="oldPassword" class="form-control-brutal mono" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="newPassword">NEW PASSWORD * (MIN 6 CHARACTERS)</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-control-brutal mono" required minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="confirmPassword">CONFIRM NEW PASSWORD *</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control-brutal mono" required minlength="6">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ UPDATE PASSWORD ]
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit ? 'EDIT COURSE // SMS' : 'ADD COURSE // SMS'}">ADD COURSE // SMS</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title" th:text="${isEdit ? 'EDIT COURSE' : 'NEW DEGREE PROGRAM'}">NEW DEGREE PROGRAM</h1>
+                    <div class="page-subtitle">05 // CURRICULUM ARCHITECTURE</div>
+                </div>
+                <div>
+                    <a th:href="@{/courses}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/courses/save}" th:object="${courseDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="code">COURSE CODE *</label>
+                            <input type="text" id="code" th:field="*{code}" class="form-control-brutal mono" placeholder="e.g. BTECH-CS, MCA" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="name">PROGRAM TITLE *</label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control-brutal" placeholder="e.g. Bachelor of Technology in Computer Science" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="departmentId">DEPARTMENT *</label>
+                            <select id="departmentId" th:field="*{departmentId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT DEPARTMENT --</option>
+                                <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.code + ' - ' + d.name}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="degreeType">DEGREE LEVEL *</label>
+                            <select id="degreeType" th:field="*{degreeType}" class="form-control-brutal mono" required>
+                                <option value="UNDERGRADUATE">UNDERGRADUATE</option>
+                                <option value="POSTGRADUATE">POSTGRADUATE</option>
+                                <option value="DOCTORATE">DOCTORATE</option>
+                                <option value="DIPLOMA">DIPLOMA</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="durationYears">DURATION (YEARS) *</label>
+                            <input type="number" id="durationYears" th:field="*{durationYears}" min="1" max="6" class="form-control-brutal mono" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="totalSemesters">TOTAL SEMESTERS *</label>
+                            <input type="number" id="totalSemesters" th:field="*{totalSemesters}" min="1" max="12" class="form-control-brutal mono" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 24px;">
+                        <label class="form-label" for="description">PROGRAM OVERVIEW</label>
+                        <textarea id="description" th:field="*{description}" class="form-control-brutal" rows="2" placeholder="Course outline, graduation requirements, and focus areas"></textarea>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ SAVE PROGRAM ]
+                        </button>
+                        <a th:href="@{/courses}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

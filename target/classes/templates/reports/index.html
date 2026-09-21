@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 // REPORTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        INSTITUTIONAL<br/>
+                        REPORTS
+                    </h1>
+                    <div class="page-subtitle">10 // ACADEMIC ANALYTICS & AUDIT INTELLIGENCE</div>
+                </div>
+            </div>
+
+            <!-- Report Navigation Grid -->
+            <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="stat-box">
+                    <div class="stat-num-tag">REPORT 01</div>
+                    <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">STUDENT MASTER AUDIT</div>
+                    <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">
+                        Full institutional roster with demographic metrics, GPA rating, and enrollment statuses.
+                    </p>
+                    <a th:href="@{/reports/students}" class="btn-brutal btn-brutal-primary" style="width: 100%;">ACCESS REPORT →</a>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">REPORT 02</div>
+                    <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">ATTENDANCE COMPLIANCE</div>
+                    <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">
+                        Attendance rate analysis identifying threshold compliance and at-risk student rates.
+                    </p>
+                    <a th:href="@{/reports/attendance}" class="btn-brutal btn-brutal-lime" style="width: 100%;">ACCESS REPORT →</a>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">REPORT 03</div>
+                    <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">ACADEMIC PERFORMANCE</div>
+                    <p style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">
+                        Grade distributions, pass/fail percentages, and departmental academic rankings.
+                    </p>
+                    <a th:href="@{/reports/performance}" class="btn-brutal" style="width: 100%;">ACCESS REPORT →</a>
+                </div>
+            </div>
+
+            <!-- Departmental Breakdown Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">DEPARTMENTAL AUDIT SUMMARY</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>CODE</th>
+                            <th>DEPARTMENT NAME</th>
+                            <th>HEAD OF DEPARTMENT</th>
+                            <th>COURSES</th>
+                            <th>FACULTY</th>
+                            <th>STUDENTS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="d : ${departments}">
+                            <td class="mono font-weight-bold" th:text="${d.code}">CSE</td>
+                            <td style="font-weight: 700;" th:text="${d.name}">Computer Science</td>
+                            <td th:text="${d.headOfDepartment}">Dr. Alan Turing</td>
+                            <td class="mono" th:text="${d.courseCount}">4</td>
+                            <td class="mono" th:text="${d.teacherCount}">12</td>
+                            <td class="mono font-weight-bold" th:text="${d.studentCount}">320</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

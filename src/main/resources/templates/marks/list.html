@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09 // MARKS & RESULTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        MARKS &<br/>
+                        RESULTS
+                    </h1>
+                    <div class="page-subtitle">09 // ACADEMIC EVALUATION & GRADEBOOK</div>
+                </div>
+                <div>
+                    <a th:href="@{/marks/record}" class="btn-brutal btn-brutal-primary">+ ENTER MARKS</a>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-bottom: 24px;">
+                <div class="stat-box">
+                    <div class="stat-num-tag">INSTITUTIONAL PASS RATE</div>
+                    <div class="stat-value" th:text="${overallPassRate + '%'}">100.0%</div>
+                    <div class="stat-label">TOTAL EVALUATIONS PASSED</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num-tag">GRADED PAPERS</div>
+                    <div class="stat-value" th:text="${totalElements}">6</div>
+                    <div class="stat-label">RECORDED EVALUATIONS</div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">GRADEBOOK LEDGER // <span th:text="${totalElements}">0</span> ENTRIES</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>STUDENT ID</th>
+                            <th>STUDENT NAME</th>
+                            <th>SUBJECT</th>
+                            <th>SEM</th>
+                            <th>INTERNAL (20)</th>
+                            <th>ASSIGNMENT (20)</th>
+                            <th>PRACTICAL (20)</th>
+                            <th>FINAL (40)</th>
+                            <th>TOTAL (100)</th>
+                            <th>GRADE</th>
+                            <th>RESULT</th>
+                            <th style="text-align: right;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="m : ${marksList.content}">
+                            <td class="mono font-weight-bold">
+                                <a th:href="@{'/students/profile/' + ${m.studentId}}" th:text="${m.studentCode}" style="text-decoration: underline;">CS20260041</a>
+                            </td>
+                            <td style="font-weight: 700;" th:text="${m.studentName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${m.subjectCode}">CS702</td>
+                            <td class="mono" th:text="${m.semester}">7</td>
+                            <td class="mono" th:text="${m.internalMarks}">18.50</td>
+                            <td class="mono" th:text="${m.assignmentMarks}">19.00</td>
+                            <td class="mono" th:text="${m.practicalMarks}">18.00</td>
+                            <td class="mono" th:text="${m.finalExamMarks}">36.50</td>
+                            <td class="mono font-weight-bold" th:text="${m.totalMarks}">92.00</td>
+                            <td><span class="badge-brutal badge-lime font-weight-bold" th:text="${m.grade}">A+</span></td>
+                            <td>
+                                <span class="badge-brutal" th:classappend="${m.status.name() == 'PASS' ? 'badge-pass' : 'badge-fail'}" th:text="${m.status}">PASS</span>
+                            </td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <a th:href="@{'/marks/report-card/' + ${m.studentId}}" class="btn-brutal btn-brutal-sm" style="margin-right: 4px;">CARD</a>
+                                <a th:href="@{'/marks/edit/' + ${m.id}}" class="btn-brutal btn-brutal-sm btn-brutal-lime" style="margin-right: 4px;">EDIT</a>
+                                <form th:action="@{'/marks/delete/' + ${m.id}}" method="post" class="delete-form" style="display:inline;">
+                                    <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">DEL</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(marksList.content)}">
+                            <td colspan="12" style="text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--font-mono);">
+                                NO MARKS ENTRIES FOUND.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<aside class="sidebar" th:fragment="sidebar">
+    <div class="sidebar-header">
+        <div class="brand-title">STUDENT<br/>MANAGEMENT<br/>SYSTEM</div>
+        <div class="brand-subtitle">ACADEMIC OPS / 2026</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-title">00 // MAIN</div>
+        <a th:href="@{/dashboard}" class="nav-link" th:classappend="${activeNav == '01'} ? 'active' : ''">
+            <span class="nav-num">01 /</span> DASHBOARD
+        </a>
+
+        <div class="nav-section-title">01 // ACADEMIC RECORDS</div>
+        <a th:href="@{/students}" class="nav-link" th:classappend="${activeNav == '02'} ? 'active' : ''">
+            <span class="nav-num">02 /</span> STUDENTS
+        </a>
+        <a th:href="@{/teachers}" class="nav-link" th:classappend="${activeNav == '03'} ? 'active' : ''">
+            <span class="nav-num">03 /</span> TEACHERS
+        </a>
+        <a th:href="@{/departments}" class="nav-link" th:classappend="${activeNav == '04'} ? 'active' : ''">
+            <span class="nav-num">04 /</span> DEPARTMENTS
+        </a>
+        <a th:href="@{/courses}" class="nav-link" th:classappend="${activeNav == '05'} ? 'active' : ''">
+            <span class="nav-num">05 /</span> COURSES
+        </a>
+        <a th:href="@{/subjects}" class="nav-link" th:classappend="${activeNav == '06'} ? 'active' : ''">
+            <span class="nav-num">06 /</span> SUBJECTS
+        </a>
+
+        <div class="nav-section-title">02 // OPERATIONS</div>
+        <a th:href="@{/enrollments}" class="nav-link" th:classappend="${activeNav == '07'} ? 'active' : ''">
+            <span class="nav-num">07 /</span> ENROLLMENTS
+        </a>
+        <a th:href="@{/attendance}" class="nav-link" th:classappend="${activeNav == '08'} ? 'active' : ''">
+            <span class="nav-num">08 /</span> ATTENDANCE
+        </a>
+        <a th:href="@{/marks}" class="nav-link" th:classappend="${activeNav == '09'} ? 'active' : ''">
+            <span class="nav-num">09 /</span> MARKS & RESULTS
+        </a>
+
+        <div class="nav-section-title">03 // INTELLIGENCE</div>
+        <a th:href="@{/reports}" class="nav-link" th:classappend="${activeNav == '10'} ? 'active' : ''">
+            <span class="nav-num">10 /</span> REPORTS
+        </a>
+        <a th:href="@{/settings}" class="nav-link" th:classappend="${activeNav == '11'} ? 'active' : ''">
+            <span class="nav-num">11 /</span> SETTINGS
+        </a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/users}" class="nav-link" th:classappend="${activeNav == '12'} ? 'active' : ''">
+            <span class="nav-num">12 /</span> USER ACCOUNTS
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-status">
+            <div>
+                <div class="user-info mono" sec:authentication="name">USER</div>
+                <div class="user-role-badge" sec:authentication="principal.authorities[0]">ROLE</div>
+            </div>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">EXIT</button>
+            </form>
+        </div>
+    </div>
+</aside>
+</body>
+</html>

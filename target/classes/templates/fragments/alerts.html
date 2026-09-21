@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="alerts">
+    <!-- Success Alert -->
+    <div th:if="${successMessage}" class="alert-brutal alert-success">
+        <div>
+            <strong>[SUCCESS] // </strong>
+            <span th:text="${successMessage}">Operation completed successfully.</span>
+        </div>
+        <button type="button" class="alert-close btn-brutal btn-brutal-sm" style="background:none; border:none; box-shadow:none; cursor:pointer;">✕</button>
+    </div>
+
+    <!-- Error Alert -->
+    <div th:if="${errorMessage}" class="alert-brutal alert-danger">
+        <div>
+            <strong>[ERROR] // </strong>
+            <span th:text="${errorMessage}">An error occurred during operation.</span>
+        </div>
+        <button type="button" class="alert-close btn-brutal btn-brutal-sm" style="background:none; border:none; box-shadow:none; cursor:pointer; color:#fff;">✕</button>
+    </div>
+</div>
+</body>
+</html>

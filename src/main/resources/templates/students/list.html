@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02 // STUDENTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Page Header -->
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">STUDENTS</h1>
+                    <div class="page-subtitle">ACADEMIC REGISTRY // STUDENT RECORDS DIRECTORY</div>
+                </div>
+                <div>
+                    <a th:href="@{/students/new}" class="btn-brutal btn-brutal-primary">+ ADD STUDENT</a>
+                </div>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <form th:action="@{/students}" method="get" class="filter-bar">
+                <div style="flex: 1; min-width: 200px;">
+                    <input type="text" name="search" th:value="${search}" placeholder="SEARCH BY NAME, ID, OR EMAIL..." class="form-control-brutal mono">
+                </div>
+                <div>
+                    <select name="departmentId" class="form-control-brutal mono" style="width: auto;">
+                        <option value="">ALL DEPARTMENTS</option>
+                        <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.code + ' - ' + d.name}" th:selected="${selectedDept == d.id}"></option>
+                    </select>
+                </div>
+                <div>
+                    <select name="semester" class="form-control-brutal mono" style="width: auto;">
+                        <option value="">ALL SEMESTERS</option>
+                        <option th:each="sem : ${#numbers.sequence(1, 8)}" th:value="${sem}" th:text="'SEM ' + ${sem}" th:selected="${selectedSemester == sem}"></option>
+                    </select>
+                </div>
+                <div>
+                    <select name="status" class="form-control-brutal mono" style="width: auto;">
+                        <option value="">ALL STATUSES</option>
+                        <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}" th:selected="${selectedStatus == st}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-brutal btn-brutal-primary">[ FILTER ]</button>
+                <a th:href="@{/students}" class="btn-brutal">[ RESET ]</a>
+            </form>
+
+            <!-- Students Data Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">REGISTRY INDEX // <span th:text="${totalElements}">0</span> TOTAL RECORDS</span>
+                    <span class="mono" style="font-size: 11px;">SORT: RECENT FIRST</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>EMAIL</th>
+                            <th>DEPARTMENT</th>
+                            <th>COURSE</th>
+                            <th>SEM</th>
+                            <th>STATUS</th>
+                            <th style="text-align: right;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${students.content}">
+                            <td class="mono font-weight-bold">
+                                <a th:href="@{'/students/profile/' + ${s.id}}" th:text="${s.studentId}" style="text-decoration: underline;">CS20260041</a>
+                            </td>
+                            <td th:text="${s.fullName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${s.email}">rishav@univ.edu</td>
+                            <td class="mono" th:text="${s.departmentName}">CSE</td>
+                            <td class="mono" th:text="${s.courseName}">B.Tech CS</td>
+                            <td class="mono" th:text="${s.semester}">7</td>
+                            <td>
+                                <span class="badge-brutal"
+                                      th:classappend="${s.status.name() == 'ACTIVE' ? 'badge-active' : (s.status.name() == 'SUSPENDED' ? 'badge-suspended' : 'badge-inactive')}"
+                                      th:text="${s.status}">ACTIVE</span>
+                            </td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <a th:href="@{'/students/profile/' + ${s.id}}" class="btn-brutal btn-brutal-sm" style="margin-right: 4px;">PROFILE</a>
+                                <a th:href="@{'/students/edit/' + ${s.id}}" class="btn-brutal btn-brutal-sm btn-brutal-lime" style="margin-right: 4px;">EDIT</a>
+                                <form th:action="@{'/students/delete/' + ${s.id}}" method="post" class="delete-form" style="display:inline;">
+                                    <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">DEL</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(students.content)}">
+                            <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--font-mono);">
+                                NO MATCHING STUDENT RECORDS FOUND.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination-brutal" th:if="${totalPages > 1}">
+                    <span class="mono" style="margin-right: 16px; font-size: 11px;">
+                        PAGE <span th:text="${currentPage + 1}">1</span> OF <span th:text="${totalPages}">1</span>
+                    </span>
+                    <a th:if="${currentPage > 0}" th:href="@{/students(page=${currentPage - 1}, search=${search}, departmentId=${selectedDept}, semester=${selectedSemester}, status=${selectedStatus})}" class="page-item-brutal">←</a>
+                    <a th:each="p : ${#numbers.sequence(0, totalPages - 1)}"
+                       th:href="@{/students(page=${p}, search=${search}, departmentId=${selectedDept}, semester=${selectedSemester}, status=${selectedStatus})}"
+                       th:text="${p + 1}"
+                       class="page-item-brutal"
+                       th:classappend="${p == currentPage ? 'active' : ''}">1</a>
+                    <a th:if="${currentPage < totalPages - 1}" th:href="@{/students(page=${currentPage + 1}, search=${search}, departmentId=${selectedDept}, semester=${selectedSemester}, status=${selectedStatus})}" class="page-item-brutal">→</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

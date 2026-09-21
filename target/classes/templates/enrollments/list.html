@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07 // ENROLLMENTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">ENROLLMENTS</h1>
+                    <div class="page-subtitle">COURSE REGISTRATION // SEMESTER ROSTERS</div>
+                </div>
+                <div>
+                    <a th:href="@{/enrollments/new}" class="btn-brutal btn-brutal-primary">+ ENROLL STUDENT</a>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">ENROLLMENT LEDGER // <span th:text="${totalElements}">0</span> RECORDS</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>STUDENT ID</th>
+                            <th>STUDENT NAME</th>
+                            <th>COURSE</th>
+                            <th>ACADEMIC YEAR</th>
+                            <th>SEMESTER</th>
+                            <th>ENROLLMENT DATE</th>
+                            <th>STATUS</th>
+                            <th style="text-align: right;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e : ${enrollments.content}">
+                            <td class="mono font-weight-bold">
+                                <a th:href="@{'/students/profile/' + ${e.studentId}}" th:text="${e.studentCode}" style="text-decoration: underline;">CS20260041</a>
+                            </td>
+                            <td th:text="${e.studentName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${e.courseCode + ' - ' + e.courseName}">BTECH-CYS</td>
+                            <td class="mono" th:text="${e.academicYear}">2025-2026</td>
+                            <td class="mono" th:text="${e.semester}">7</td>
+                            <td class="mono" th:text="${e.enrollmentDate}">2025-08-01</td>
+                            <td><span class="badge-brutal badge-active" th:text="${e.status}">ACTIVE</span></td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <form th:action="@{'/enrollments/delete/' + ${e.id}}" method="post" class="delete-form" style="display:inline;">
+                                    <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">CANCEL</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

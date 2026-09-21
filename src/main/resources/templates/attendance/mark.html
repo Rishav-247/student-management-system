@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECORD ATTENDANCE // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        ATTENDANCE<br/>
+                        TRACKER
+                    </h1>
+                    <div class="page-subtitle">08 // SESSION ROLL CALL & VERIFICATION</div>
+                </div>
+                <div>
+                    <a th:href="@{/attendance}" class="btn-brutal">← BACK TO LOGS</a>
+                </div>
+            </div>
+
+            <!-- Selection Bar -->
+            <form th:action="@{/attendance/mark}" method="get" class="filter-bar" style="margin-bottom: 32px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; width: 100%; align-items: flex-end;">
+                    <div style="flex: 1; min-width: 220px;">
+                        <label class="form-label">SELECT DEGREE PROGRAM</label>
+                        <select name="courseId" class="form-control-brutal mono" onchange="this.form.submit()" required>
+                            <option value="">-- SELECT COURSE --</option>
+                            <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.code + ' - ' + c.name}" th:selected="${selectedCourseId == c.id}"></option>
+                        </select>
+                    </div>
+
+                    <div style="flex: 1; min-width: 220px;" th:if="${subjects != null}">
+                        <label class="form-label">SELECT SUBJECT</label>
+                        <select name="subjectId" class="form-control-brutal mono" onchange="this.form.submit()" required>
+                            <option value="">-- SELECT SUBJECT --</option>
+                            <option th:each="sub : ${subjects}" th:value="${sub.id}" th:text="${sub.code + ' - ' + sub.name}" th:selected="${selectedSubjectId == sub.id}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="form-label">SESSION DATE</label>
+                        <input type="date" name="date" th:value="${selectedDate}" class="form-control-brutal mono" onchange="this.form.submit()">
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn-brutal btn-brutal-primary">[ LOAD ROSTER ]</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Student Roster for Marking -->
+            <div class="table-container" th:if="${studentAttendanceList != null}">
+                <div class="table-header-bar">
+                    <span class="table-title">ACTIVE ROSTER // <span th:text="${#lists.size(studentAttendanceList)}">0</span> CANDIDATES ENROLLED</span>
+                    <span class="mono" style="font-size: 11px;">DATE: <strong th:text="${selectedDate}">2026-09-21</strong></span>
+                </div>
+
+                <form th:action="@{/attendance/save}" method="post">
+                    <input type="hidden" name="subjectId" th:value="${selectedSubjectId}">
+                    <input type="hidden" name="attendanceDate" th:value="${selectedDate}">
+
+                    <table class="brutal-table">
+                        <thead>
+                            <tr>
+                                <th>STUDENT ID</th>
+                                <th>NAME</th>
+                                <th style="width: 280px;">ATTENDANCE STATUS</th>
+                                <th>REMARKS / OBSERVATIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="row : ${studentAttendanceList}">
+                                <input type="hidden" name="studentIds" th:value="${row.studentId}">
+                                <td class="mono font-weight-bold" th:text="${row.studentCode}">CS20260041</td>
+                                <td style="font-weight: 700;" th:text="${row.studentName}">Rishav Thakur</td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 4px;" class="mono font-weight-bold">
+                                            <input type="radio" th:name="${'status_' + row.studentId}" value="PRESENT" checked> PRESENT
+                                        </label>
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 4px; color: var(--accent-red);" class="mono font-weight-bold">
+                                            <input type="radio" th:name="${'status_' + row.studentId}" value="ABSENT"> ABSENT
+                                        </label>
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 4px; color: #CC8800;" class="mono font-weight-bold">
+                                            <input type="radio" th:name="${'status_' + row.studentId}" value="LATE"> LATE
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" th:name="${'remarks_' + row.studentId}" class="form-control-brutal mono" style="padding: 6px 10px; font-size: 12px;" placeholder="Optional remark...">
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(studentAttendanceList)}">
+                                <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--font-mono);">
+                                    NO ENROLLED STUDENTS FOUND IN THIS COURSE.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="padding: 20px; background-color: var(--bg-canvas); border-top: var(--border-width) solid var(--border-main); display: flex; justify-content: flex-end; gap: 12px;" th:if="${not #lists.isEmpty(studentAttendanceList)}">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 32px;">
+                            [ SUBMIT SESSION ATTENDANCE ]
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

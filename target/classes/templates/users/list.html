@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 // USER ACCOUNTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        USER<br/>
+                        ACCOUNTS
+                    </h1>
+                    <div class="page-subtitle">12 // SECURITY IDENTITIES & RBAC ROLES</div>
+                </div>
+                <div>
+                    <a th:href="@{/users/new}" class="btn-brutal btn-brutal-primary">+ CREATE USER</a>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">CREDENTIAL REGISTRY // <span th:text="${#lists.size(users)}">0</span> TOTAL</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>USERNAME</th>
+                            <th>EMAIL</th>
+                            <th>ROLE</th>
+                            <th>ENABLED</th>
+                            <th>CREATED AT</th>
+                            <th style="text-align: right;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="u : ${users}">
+                            <td class="mono font-weight-bold" th:text="${u.id}">1</td>
+                            <td class="mono font-weight-bold" th:text="${u.username}">admin</td>
+                            <td class="mono" th:text="${u.email}">admin@univ.edu</td>
+                            <td>
+                                <span class="badge-brutal"
+                                      th:classappend="${u.role.name() == 'ROLE_ADMIN' ? 'badge-absent' : (u.role.name() == 'ROLE_TEACHER' ? 'badge-lime' : 'badge-active')}"
+                                      th:text="${u.role}">ROLE_ADMIN</span>
+                            </td>
+                            <td>
+                                <span class="badge-brutal badge-active" th:text="${u.enabled ? 'ACTIVE' : 'DISABLED'}">ACTIVE</span>
+                            </td>
+                            <td class="mono" th:text="${#temporals.format(u.createdAt, 'yyyy-MM-dd HH:mm')}">2026-09-21</td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <form th:if="${u.username != 'admin'}" th:action="@{'/users/delete/' + ${u.id}}" method="post" class="delete-form" style="display:inline;">
+                                    <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">DEL</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

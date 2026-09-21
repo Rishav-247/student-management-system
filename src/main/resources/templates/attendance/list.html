@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08 // ATTENDANCE — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">ATTENDANCE</h1>
+                    <div class="page-subtitle">OPERATIONS // SESSION LOGS & COMPLIANCE</div>
+                </div>
+                <div>
+                    <a th:href="@{/attendance/mark}" class="btn-brutal btn-brutal-lime">+ RECORD ATTENDANCE</a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-grid" style="margin-bottom: 24px;">
+                <div class="stat-box">
+                    <div class="stat-num-tag">INSTITUTIONAL METRIC</div>
+                    <div class="stat-value" th:text="${overallRate + '%'}">93.3%</div>
+                    <div class="stat-label">AGGREGATE ATTENDANCE RATE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num-tag">LOGGED SESSIONS</div>
+                    <div class="stat-value" th:text="${totalElements}">18</div>
+                    <div class="stat-label">TOTAL VERIFIED ATTENDANCE EVENTS</div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <form th:action="@{/attendance}" method="get" class="filter-bar">
+                <div>
+                    <select name="subjectId" class="form-control-brutal mono" style="width: auto;">
+                        <option value="">ALL SUBJECTS</option>
+                        <option th:each="sub : ${subjects}" th:value="${sub.id}" th:text="${sub.code + ' - ' + sub.name}" th:selected="${selectedSubject == sub.id}"></option>
+                    </select>
+                </div>
+                <div>
+                    <input type="date" name="date" th:value="${selectedDate}" class="form-control-brutal mono" style="width: auto;">
+                </div>
+                <div>
+                    <select name="status" class="form-control-brutal mono" style="width: auto;">
+                        <option value="">ALL STATUSES</option>
+                        <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}" th:selected="${selectedStatus == st}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-brutal btn-brutal-primary">[ FILTER ]</button>
+                <a th:href="@{/attendance}" class="btn-brutal">[ RESET ]</a>
+            </form>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">SESSION LOG // <span th:text="${totalElements}">0</span> ENTRIES</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>STUDENT ID</th>
+                            <th>STUDENT NAME</th>
+                            <th>SUBJECT</th>
+                            <th>STATUS</th>
+                            <th>REMARKS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="att : ${attendances.content}">
+                            <td class="mono font-weight-bold" th:text="${att.attendanceDate}">2026-09-21</td>
+                            <td class="mono">
+                                <a th:href="@{'/students/profile/' + ${att.studentId}}" th:text="${att.studentCode}" style="text-decoration: underline;">CS20260041</a>
+                            </td>
+                            <td th:text="${att.studentName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${att.subjectCode + ' - ' + att.subjectName}">CS702 - Cryptography</td>
+                            <td>
+                                <span class="badge-brutal"
+                                      th:classappend="${att.status.name() == 'PRESENT' ? 'badge-present' : (att.status.name() == 'ABSENT' ? 'badge-absent' : 'badge-late')}"
+                                      th:text="${att.status}">PRESENT</span>
+                            </td>
+                            <td class="mono" style="color: var(--text-muted);" th:text="${att.remarks != null ? att.remarks : '—'}">Regular</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

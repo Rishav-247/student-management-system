@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06 // SUBJECTS — STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">SUBJECTS</h1>
+                    <div class="page-subtitle">COURSE MODULES // ACADEMIC SYLLABUS</div>
+                </div>
+                <div>
+                    <a th:href="@{/subjects/new}" class="btn-brutal btn-brutal-primary">+ ADD SUBJECT</a>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">SUBJECT ROSTER // <span th:text="${totalElements}">0</span> TOTAL</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>CODE</th>
+                            <th>NAME</th>
+                            <th>COURSE</th>
+                            <th>DEPARTMENT</th>
+                            <th>SEMESTER</th>
+                            <th>CREDITS</th>
+                            <th>TYPE</th>
+                            <th style="text-align: right;">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sub : ${subjects.content}">
+                            <td class="mono font-weight-bold" th:text="${sub.code}">CS701</td>
+                            <td style="font-weight: 700;" th:text="${sub.name}">Distributed Operating Systems</td>
+                            <td class="mono" th:text="${sub.courseName}">B.Tech CS</td>
+                            <td class="mono" th:text="${sub.departmentName}">CSE</td>
+                            <td class="mono" th:text="${sub.semester}">7</td>
+                            <td class="mono font-weight-bold" th:text="${sub.credits}">4</td>
+                            <td><span class="badge-brutal badge-active" th:text="${sub.type}">THEORY</span></td>
+                            <td style="text-align: right; white-space: nowrap;">
+                                <a th:href="@{'/subjects/edit/' + ${sub.id}}" class="btn-brutal btn-brutal-sm btn-brutal-lime" style="margin-right: 4px;">EDIT</a>
+                                <form th:action="@{'/subjects/delete/' + ${sub.id}}" method="post" class="delete-form" style="display:inline;">
+                                    <button type="submit" class="btn-brutal btn-brutal-sm btn-brutal-accent">DEL</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

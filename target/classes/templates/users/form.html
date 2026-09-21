@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEW USER // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">NEW USER</h1>
+                    <div class="page-subtitle">12 // PROVISION SECURITY IDENTITY</div>
+                </div>
+                <div>
+                    <a th:href="@{/users}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/users/save}" th:object="${userDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="username">USERNAME *</label>
+                            <input type="text" id="username" th:field="*{username}" class="form-control-brutal mono" placeholder="username" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">EMAIL ADDRESS *</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-control-brutal mono" placeholder="user@university.edu" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="password">PASSWORD *</label>
+                            <input type="password" id="password" th:field="*{password}" class="form-control-brutal mono" placeholder="••••••••" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="role">ROLE PRIVILEGE *</label>
+                            <select id="role" th:field="*{role}" class="form-control-brutal mono" required>
+                                <option th:each="r : ${roles}" th:value="${r}" th:text="${r.displayName + ' (' + r + ')'}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ CREATE USER ACCOUNT ]
+                        </button>
+                        <a th:href="@{/users}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

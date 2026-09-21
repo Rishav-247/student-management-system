@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit ? 'EDIT DEPARTMENT // SMS' : 'ADD DEPARTMENT // SMS'}">ADD DEPARTMENT // SMS</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title" th:text="${isEdit ? 'EDIT DEPARTMENT' : 'CREATE DEPARTMENT'}">CREATE DEPARTMENT</h1>
+                    <div class="page-subtitle">04 // INSTITUTIONAL UNIT CONFIGURATION</div>
+                </div>
+                <div>
+                    <a th:href="@{/departments}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/departments/save}" th:object="${departmentDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="code">DEPARTMENT CODE *</label>
+                            <input type="text" id="code" th:field="*{code}" class="form-control-brutal mono" placeholder="e.g. CSE, ECE, CYS" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="name">DEPARTMENT NAME *</label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control-brutal" placeholder="e.g. Computer Science & Engineering" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="headOfDepartment">HEAD OF DEPARTMENT</label>
+                            <input type="text" id="headOfDepartment" th:field="*{headOfDepartment}" class="form-control-brutal" placeholder="e.g. Dr. Alan Turing">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="contactEmail">CONTACT EMAIL</label>
+                            <input type="email" id="contactEmail" th:field="*{contactEmail}" class="form-control-brutal mono" placeholder="dept@univ.edu">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="contactPhone">CONTACT PHONE</label>
+                            <input type="text" id="contactPhone" th:field="*{contactPhone}" class="form-control-brutal mono" placeholder="+1-555-0100">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 24px;">
+                        <label class="form-label" for="description">MISSION & DESCRIPTION</label>
+                        <textarea id="description" th:field="*{description}" class="form-control-brutal" rows="3" placeholder="Departmental overview and research scope"></textarea>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ SAVE DEPARTMENT ]
+                        </button>
+                        <a th:href="@{/departments}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

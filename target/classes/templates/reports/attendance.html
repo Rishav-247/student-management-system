@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATTENDANCE COMPLIANCE REPORT // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        ATTENDANCE<br/>
+                        COMPLIANCE
+                    </h1>
+                    <div class="page-subtitle">10 // REGULATORY ELIGIBILITY AUDIT (MIN 75%)</div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="window.print()" class="btn-brutal btn-brutal-lime">PRINT AUDIT</button>
+                    <a th:href="@{/reports}" class="btn-brutal">← BACK</a>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-bottom: 24px;">
+                <div class="stat-box">
+                    <div class="stat-num-tag">AVERAGE COMPLIANCE</div>
+                    <div class="stat-value" th:text="${overallRate + '%'}">93.3%</div>
+                    <div class="stat-label">INSTITUTIONAL METRIC</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num-tag">REGULATION</div>
+                    <div class="stat-value">75.0%</div>
+                    <div class="stat-label">EXAMINATION ELIGIBILITY THRESHOLD</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">STUDENT ATTENDANCE MATRIX</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>STUDENT ID</th>
+                            <th>NAME</th>
+                            <th>COURSE</th>
+                            <th>RATE</th>
+                            <th>ELIGIBILITY STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${students}">
+                            <td class="mono font-weight-bold">
+                                <a th:href="@{'/students/profile/' + ${s.id}}" th:text="${s.studentId}" style="text-decoration: underline;">CS20260041</a>
+                            </td>
+                            <td style="font-weight: 700;" th:text="${s.fullName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${s.courseName}">B.Tech Cyber Security</td>
+                            <td class="mono font-weight-bold"
+                                th:style="${s.attendanceRate < 75.0 ? 'color: var(--accent-red);' : ''}"
+                                th:text="${s.attendanceRate + '%'}">93.3%</td>
+                            <td>
+                                <span class="badge-brutal"
+                                      th:classappend="${s.attendanceRate >= 75.0 ? 'badge-present' : 'badge-absent'}"
+                                      th:text="${s.attendanceRate >= 75.0 ? 'ELIGIBLE' : 'DEBARRED (< 75%)'}">ELIGIBLE</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

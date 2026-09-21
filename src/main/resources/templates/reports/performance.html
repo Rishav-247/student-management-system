@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACADEMIC PERFORMANCE REPORT // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        ACADEMIC<br/>
+                        PERFORMANCE
+                    </h1>
+                    <div class="page-subtitle">10 // MERIT RANKING & PERFORMANCE AUDIT</div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button onclick="window.print()" class="btn-brutal btn-brutal-lime">PRINT AUDIT</button>
+                    <a th:href="@{/reports}" class="btn-brutal">← BACK</a>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-bottom: 24px;">
+                <div class="stat-box">
+                    <div class="stat-num-tag">INSTITUTIONAL PASS RATE</div>
+                    <div class="stat-value" th:text="${passRate + '%'}">100.0%</div>
+                    <div class="stat-label">AGGREGATE SUCCESS RATE</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num-tag">EVALUATION BENCHMARK</div>
+                    <div class="stat-value">A / 8.5+</div>
+                    <div class="stat-label">AVERAGE DISTINCTION GPA</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">STUDENT PERFORMANCE RANKINGS</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>STUDENT ID</th>
+                            <th>NAME</th>
+                            <th>DEPARTMENT</th>
+                            <th>COURSE</th>
+                            <th>SEMESTER</th>
+                            <th>CURRENT GPA</th>
+                            <th style="text-align: right;">TRANSCRIPT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${students}">
+                            <td class="mono font-weight-bold" th:text="${s.studentId}">CS20260041</td>
+                            <td style="font-weight: 700;" th:text="${s.fullName}">Rishav Thakur</td>
+                            <td class="mono" th:text="${s.departmentName}">Cyber Security</td>
+                            <td class="mono" th:text="${s.courseName}">B.Tech CS</td>
+                            <td class="mono" th:text="${s.semester}">7</td>
+                            <td class="mono font-weight-bold" style="font-size: 15px;" th:text="${s.currentGpa}">8.85</td>
+                            <td style="text-align: right;">
+                                <a th:href="@{'/marks/report-card/' + ${s.id}}" class="btn-brutal btn-brutal-sm btn-brutal-lime">TRANSCRIPT →</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

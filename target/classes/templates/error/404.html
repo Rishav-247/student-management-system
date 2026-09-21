@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 // RESOURCE NOT FOUND</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body style="display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px;">
+    <div style="max-width: 600px; width: 100%; border: var(--border-width) solid var(--border-main); background: #fff; padding: 48px; box-shadow: 8px 8px 0px var(--border-main);">
+        <div class="mono" style="font-size: 14px; color: var(--accent-red); font-weight: 800; margin-bottom: 12px;">
+            [HTTP STATUS 404] // LOOKUP FAILURE
+        </div>
+        <h1 style="font-size: 48px; margin-bottom: 20px;">RESOURCE<br/>NOT FOUND</h1>
+        <p style="font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); margin-bottom: 32px;" th:text="${message}">
+            The requested academic resource, record ID, or route could not be found.
+        </p>
+        <a th:href="@{/dashboard}" class="btn-brutal btn-brutal-primary">← RETURN TO DASHBOARD</a>
+    </div>
+</body>
+</html>

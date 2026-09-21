@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit ? 'EDIT STUDENT // SMS' : 'ADD STUDENT // SMS'}">ADD STUDENT // SMS</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Header -->
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title" th:text="${isEdit ? 'EDIT STUDENT' : 'ADD NEW STUDENT'}">ADD NEW STUDENT</h1>
+                    <div class="page-subtitle">02 // ACADEMIC REGISTRY ENTRY</div>
+                </div>
+                <div>
+                    <a th:href="@{/students}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <form th:action="@{/students/save}" th:object="${studentDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <!-- Student ID -->
+                        <div class="form-group">
+                            <label class="form-label" for="studentId">STUDENT ID *</label>
+                            <input type="text" id="studentId" th:field="*{studentId}" class="form-control-brutal mono" placeholder="e.g. CS20260041" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label class="form-label" for="email">INSTITUTIONAL EMAIL *</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-control-brutal mono" placeholder="student@university.edu" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">FIRST NAME *</label>
+                            <input type="text" id="firstName" th:field="*{firstName}" class="form-control-brutal" placeholder="Given Name" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">LAST NAME *</label>
+                            <input type="text" id="lastName" th:field="*{lastName}" class="form-control-brutal" placeholder="Family Name" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="form-group">
+                            <label class="form-label" for="departmentId">DEPARTMENT *</label>
+                            <select id="departmentId" th:field="*{departmentId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT DEPARTMENT --</option>
+                                <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.code + ' - ' + d.name}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('departmentId')}" th:errors="*{departmentId}"></span>
+                        </div>
+
+                        <!-- Course -->
+                        <div class="form-group">
+                            <label class="form-label" for="courseId">DEGREE PROGRAM / COURSE *</label>
+                            <select id="courseId" th:field="*{courseId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT COURSE --</option>
+                                <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.code + ' - ' + c.name}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('courseId')}" th:errors="*{courseId}"></span>
+                        </div>
+
+                        <!-- Semester -->
+                        <div class="form-group">
+                            <label class="form-label" for="semester">CURRENT SEMESTER *</label>
+                            <select id="semester" th:field="*{semester}" class="form-control-brutal mono" required>
+                                <option th:each="sem : ${#numbers.sequence(1, 8)}" th:value="${sem}" th:text="'SEMESTER ' + ${sem}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('semester')}" th:errors="*{semester}"></span>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <label class="form-label" for="gender">GENDER *</label>
+                            <select id="gender" th:field="*{gender}" class="form-control-brutal mono" required>
+                                <option th:each="g : ${genders}" th:value="${g}" th:text="${g}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <label class="form-label" for="dateOfBirth">DATE OF BIRTH</label>
+                            <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" class="form-control-brutal mono">
+                        </div>
+
+                        <!-- Admission Date -->
+                        <div class="form-group">
+                            <label class="form-label" for="admissionDate">ADMISSION DATE</label>
+                            <input type="date" id="admissionDate" th:field="*{admissionDate}" class="form-control-brutal mono">
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label class="form-label" for="phone">CONTACT PHONE</label>
+                            <input type="text" id="phone" th:field="*{phone}" class="form-control-brutal mono" placeholder="+1-555-0000">
+                        </div>
+
+                        <!-- Status -->
+                        <div class="form-group">
+                            <label class="form-label" for="status">ACADEMIC STATUS *</label>
+                            <select id="status" th:field="*{status}" class="form-control-brutal mono" required>
+                                <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-group" style="margin-top: 24px;">
+                        <label class="form-label" for="address">RESIDENTIAL ADDRESS</label>
+                        <textarea id="address" th:field="*{address}" class="form-control-brutal" rows="2" placeholder="Permanent or campus residence address"></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ SAVE STUDENT RECORD ]
+                        </button>
+                        <a th:href="@{/students}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

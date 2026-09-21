@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENROLL STUDENT // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">ENROLL STUDENT</h1>
+                    <div class="page-subtitle">07 // COURSE ADMISSION & SEMESTER ALLOCATION</div>
+                </div>
+                <div>
+                    <a th:href="@{/enrollments}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/enrollments/save}" th:object="${enrollmentDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="studentId">SELECT CANDIDATE / STUDENT *</label>
+                            <select id="studentId" th:field="*{studentId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT STUDENT --</option>
+                                <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.studentId + ' — ' + s.fullName}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="courseId">COURSE / PROGRAM *</label>
+                            <select id="courseId" th:field="*{courseId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT COURSE --</option>
+                                <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.code + ' - ' + c.name}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('courseId')}" th:errors="*{courseId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="academicYear">ACADEMIC YEAR *</label>
+                            <input type="text" id="academicYear" th:field="*{academicYear}" class="form-control-brutal mono" placeholder="e.g. 2025-2026" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('academicYear')}" th:errors="*{academicYear}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="semester">SEMESTER *</label>
+                            <select id="semester" th:field="*{semester}" class="form-control-brutal mono" required>
+                                <option th:each="sem : ${#numbers.sequence(1, 8)}" th:value="${sem}" th:text="'SEMESTER ' + ${sem}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="enrollmentDate">ENROLLMENT DATE *</label>
+                            <input type="date" id="enrollmentDate" th:field="*{enrollmentDate}" class="form-control-brutal mono" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="status">STATUS *</label>
+                            <select id="status" th:field="*{status}" class="form-control-brutal mono" required>
+                                <option th:each="st : ${statuses}" th:value="${st}" th:text="${st}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ CONFIRM ENROLLMENT ]
+                        </button>
+                        <a th:href="@{/enrollments}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

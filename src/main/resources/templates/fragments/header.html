@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="top-header" th:fragment="header">
+    <div class="header-breadcrumbs">
+        <button id="sidebar-toggle" class="btn-brutal btn-brutal-sm" style="display:none;" title="Toggle Sidebar">☰</button>
+        <span>ACADEMIC OPERATIONS</span>
+        <span>/</span>
+        <span class="mono" th:text="${activeNav != null ? activeNav : '01'}">01</span>
+    </div>
+
+    <div class="header-actions">
+        <span class="date-tag mono" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">2026-09-21</span>
+        <a th:href="@{/students/new}" class="btn-brutal btn-brutal-sm btn-brutal-primary">+ ADD STUDENT</a>
+    </div>
+</header>
+</body>
+</html>

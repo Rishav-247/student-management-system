@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit ? 'EDIT MARKS // SMS' : 'RECORD MARKS // SMS'}">RECORD MARKS // SMS</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title" th:text="${isEdit ? 'EDIT MARKS' : 'RECORD MARKS'}">RECORD MARKS</h1>
+                    <div class="page-subtitle">09 // ACADEMIC ASSESSMENT INPUT</div>
+                </div>
+                <div>
+                    <a th:href="@{/marks}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/marks/save}" th:object="${marksDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="studentId">STUDENT CANDIDATE *</label>
+                            <select id="studentId" th:field="*{studentId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT STUDENT --</option>
+                                <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.studentId + ' — ' + s.fullName}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="subjectId">SUBJECT MODULE *</label>
+                            <select id="subjectId" th:field="*{subjectId}" class="form-control-brutal mono" required>
+                                <option value="">-- SELECT SUBJECT --</option>
+                                <option th:each="sub : ${subjects}" th:value="${sub.id}" th:text="${sub.code + ' - ' + sub.name}"></option>
+                            </select>
+                            <span class="form-error" th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="semester">SEMESTER *</label>
+                            <select id="semester" th:field="*{semester}" class="form-control-brutal mono" required>
+                                <option th:each="sem : ${#numbers.sequence(1, 8)}" th:value="${sem}" th:text="'SEMESTER ' + ${sem}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="academicYear">ACADEMIC YEAR *</label>
+                            <input type="text" id="academicYear" th:field="*{academicYear}" class="form-control-brutal mono" placeholder="e.g. 2025-2026" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="internalMarks">INTERNAL ASSESSMENT (MAX 20.00)</label>
+                            <input type="number" step="0.01" min="0" max="20" id="internalMarks" th:field="*{internalMarks}" class="form-control-brutal mono" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('internalMarks')}" th:errors="*{internalMarks}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="assignmentMarks">ASSIGNMENT MARKS (MAX 20.00)</label>
+                            <input type="number" step="0.01" min="0" max="20" id="assignmentMarks" th:field="*{assignmentMarks}" class="form-control-brutal mono" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('assignmentMarks')}" th:errors="*{assignmentMarks}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="practicalMarks">PRACTICAL LAB (MAX 20.00)</label>
+                            <input type="number" step="0.01" min="0" max="20" id="practicalMarks" th:field="*{practicalMarks}" class="form-control-brutal mono" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('practicalMarks')}" th:errors="*{practicalMarks}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="finalExamMarks">FINAL EXAMINATION (MAX 40.00)</label>
+                            <input type="number" step="0.01" min="0" max="40" id="finalExamMarks" th:field="*{finalExamMarks}" class="form-control-brutal mono" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('finalExamMarks')}" th:errors="*{finalExamMarks}"></span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ RECORD & CALCULATE GRADE ]
+                        </button>
+                        <a th:href="@{/marks}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

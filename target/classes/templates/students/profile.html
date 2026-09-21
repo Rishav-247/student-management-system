@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENT PROFILE // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Profile Hero -->
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        STUDENT<br/>
+                        PROFILE
+                    </h1>
+                    <div class="page-subtitle">
+                        DOSSIER // <span th:text="${profile.student.studentId}" class="mono font-weight-bold">CS20260041</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <a th:href="@{'/marks/report-card/' + ${profile.student.id}}" class="btn-brutal btn-brutal-lime">VIEW TRANSCRIPT</a>
+                    <a th:href="@{'/students/edit/' + ${profile.student.id}}" class="btn-brutal btn-brutal-primary">EDIT RECORD</a>
+                    <a th:href="@{/students}" class="btn-brutal">← BACK</a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-grid" style="margin-bottom: 32px;">
+                <div class="stat-box">
+                    <div class="stat-num-tag">ATTENDANCE RATE</div>
+                    <div class="stat-value"
+                         th:style="${profile.overallAttendanceRate < 75.0 ? 'color: var(--accent-red);' : ''}"
+                         th:text="${#numbers.formatDecimal(profile.overallAttendanceRate, 1, 1) + '%'}">93.3%</div>
+                    <div class="stat-label">TOTAL CLASSES: <span th:text="${profile.totalClasses}">45</span></div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">CUMULATIVE GPA</div>
+                    <div class="stat-value" th:text="${profile.student.currentGpa}">8.85</div>
+                    <div class="stat-label">ACADEMIC RATING (10.0 SCALE)</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">SEMESTER</div>
+                    <div class="stat-value" th:text="${profile.student.semester}">VII</div>
+                    <div class="stat-label">ACADEMIC STANDING</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">RECORD STATUS</div>
+                    <div class="stat-value" style="font-size: 32px;" th:text="${profile.student.status}">ACTIVE</div>
+                    <div class="stat-label">ENROLLED DEGREE CANDIDATE</div>
+                </div>
+            </div>
+
+            <!-- 01 / PERSONAL INFORMATION -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">01 // PERSONAL INFORMATION</span>
+                </div>
+                <div style="padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <div>
+                        <div class="stat-label">STUDENT ID</div>
+                        <div class="mono font-weight-bold" style="font-size: 16px; margin-top: 4px;" th:text="${profile.student.studentId}">CS20260041</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">FULL NAME</div>
+                        <div style="font-size: 16px; font-weight: 700; margin-top: 4px;" th:text="${profile.student.fullName}">RISHAV THAKUR</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">EMAIL ADDRESS</div>
+                        <div class="mono" style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.email}">rishav@university.edu</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">PHONE</div>
+                        <div class="mono" style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.phone != null ? profile.student.phone : 'N/A'}">+91-9876543210</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">GENDER</div>
+                        <div class="mono" style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.gender}">MALE</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">DATE OF BIRTH</div>
+                        <div class="mono" style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.dateOfBirth != null ? profile.student.dateOfBirth : 'N/A'}">2003-05-14</div>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <div class="stat-label">PERMANENT ADDRESS</div>
+                        <div style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.address != null ? profile.student.address : 'Not provided'}">Suite 401, Academic Block North</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 / ACADEMIC INFORMATION -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">02 // ACADEMIC & PROGRAM INFORMATION</span>
+                </div>
+                <div style="padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <div>
+                        <div class="stat-label">DEPARTMENT</div>
+                        <div style="font-size: 16px; font-weight: 700; margin-top: 4px;" th:text="${profile.student.departmentName}">Cyber Security</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">DEGREE PROGRAM</div>
+                        <div style="font-size: 16px; font-weight: 700; margin-top: 4px;" th:text="${profile.student.courseName}">B.Tech in Cyber Security</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">SEMESTER</div>
+                        <div class="mono font-weight-bold" style="font-size: 16px; margin-top: 4px;" th:text="${profile.student.semester}">7</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">ADMISSION DATE</div>
+                        <div class="mono" style="font-size: 14px; margin-top: 4px;" th:text="${profile.student.admissionDate != null ? profile.student.admissionDate : 'N/A'}">2022-08-01</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 / ATTENDANCE HISTORY -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">03 // RECENT ATTENDANCE HISTORY</span>
+                    <span class="mono" style="font-size: 11px;">
+                        PRESENT: <strong th:text="${profile.attendedClasses}">42</strong> / ABSENT: <strong th:text="${profile.absentClasses}">3</strong>
+                    </span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>SUBJECT CODE</th>
+                            <th>SUBJECT NAME</th>
+                            <th>STATUS</th>
+                            <th>REMARKS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="att : ${profile.recentAttendance}">
+                            <td class="mono font-weight-bold" th:text="${att.attendanceDate}">2026-09-21</td>
+                            <td class="mono" th:text="${att.subjectCode}">CS702</td>
+                            <td th:text="${att.subjectName}">Network Security</td>
+                            <td>
+                                <span class="badge-brutal"
+                                      th:classappend="${att.status.name() == 'PRESENT' ? 'badge-present' : (att.status.name() == 'ABSENT' ? 'badge-absent' : 'badge-late')}"
+                                      th:text="${att.status}">PRESENT</span>
+                            </td>
+                            <td class="mono" style="font-size: 12px; color: var(--text-muted);" th:text="${att.remarks != null ? att.remarks : '—'}">Regular</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(profile.recentAttendance)}">
+                            <td colspan="5" style="text-align: center; color: var(--text-muted); font-family: var(--font-mono); padding: 20px;">NO ATTENDANCE SESSIONS LOGGED</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 04 / PERFORMANCE & MARKS -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">04 // ACADEMIC PERFORMANCE & MARKS</span>
+                    <a th:href="@{'/marks/report-card/' + ${profile.student.id}}" class="btn-brutal btn-brutal-sm btn-brutal-lime">FULL TRANSCRIPT →</a>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>SUBJECT</th>
+                            <th>INTERNAL (20)</th>
+                            <th>ASSIGNMENT (20)</th>
+                            <th>PRACTICAL (20)</th>
+                            <th>FINAL EXAM (40)</th>
+                            <th>TOTAL (100)</th>
+                            <th>GRADE</th>
+                            <th>RESULT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="m : ${profile.marks}">
+                            <td class="font-weight-bold" th:text="${m.subjectCode + ' - ' + m.subjectName}">CS702 - Cryptography</td>
+                            <td class="mono" th:text="${m.internalMarks}">18.50</td>
+                            <td class="mono" th:text="${m.assignmentMarks}">19.00</td>
+                            <td class="mono" th:text="${m.practicalMarks}">18.00</td>
+                            <td class="mono" th:text="${m.finalExamMarks}">36.50</td>
+                            <td class="mono font-weight-bold" th:text="${m.totalMarks}">92.00</td>
+                            <td>
+                                <span class="badge-brutal badge-lime font-weight-bold" th:text="${m.grade}">A+</span>
+                            </td>
+                            <td>
+                                <span class="badge-brutal" th:classappend="${m.status.name() == 'PASS' ? 'badge-pass' : 'badge-fail'}" th:text="${m.status}">PASS</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(profile.marks)}">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-family: var(--font-mono); padding: 20px;">NO MARKS EVALUATIONS RECORDED YET</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

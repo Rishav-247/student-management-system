@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="login-wrapper">
+    <!-- Left Editorial Pane -->
+    <div class="login-editorial-pane">
+        <div>
+            <div class="mono" style="font-size: 13px; letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 24px;">
+                00 // INSTITUTIONAL ACCESS
+            </div>
+            <h1>
+                STUDENT<br/>
+                MANAGEMENT<br/>
+                SYSTEM
+            </h1>
+        </div>
+
+        <div>
+            <div class="mono" style="font-size: 40px; font-weight: 800; color: var(--accent-lime); margin-bottom: 12px;">
+                / 2026
+            </div>
+            <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                ACADEMIC OPERATIONS<br/>PLATFORM
+            </div>
+            <div class="mono" style="font-size: 11px; margin-top: 24px; opacity: 0.6;">
+                DEPARTMENTAL INFORMATION INFRASTRUCTURE
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Form Pane -->
+    <div class="login-form-pane">
+        <div class="login-form-box">
+            <div class="editorial-header" style="margin-bottom: 24px; padding-bottom: 16px;">
+                <div>
+                    <div class="mono" style="font-size: 10px; color: var(--text-muted);">01 / AUTHENTICATION</div>
+                    <h2 style="font-size: 28px;">LOGIN</h2>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div th:if="${errorMessage}" class="alert-brutal alert-danger" style="padding: 10px 14px; margin-bottom: 20px;">
+                <span th:text="${errorMessage}">INVALID CREDENTIALS</span>
+            </div>
+
+            <!-- Logout Banner -->
+            <div th:if="${logoutMessage}" class="alert-brutal alert-success" style="padding: 10px 14px; margin-bottom: 20px;">
+                <span th:text="${logoutMessage}">LOGGED OUT</span>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label" for="username">USERNAME OR EMAIL</label>
+                    <input type="text" id="username" name="username" class="form-control-brutal mono" required autofocus placeholder="admin or student@univ.edu">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 28px;">
+                    <label class="form-label" for="password">PASSWORD</label>
+                    <input type="password" id="password" name="password" class="form-control-brutal mono" required placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-brutal btn-brutal-primary" style="width: 100%; padding: 14px; font-size: 14px;">
+                    [ ACCESS SYSTEM ]
+                </button>
+            </form>
+
+            <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #E0E0E0; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-align: center;">
+                SECURE ACADEMIC MANAGEMENT SYSTEM<br/>VERSION 1.0 // SWISS BRUTALIST ENGINE
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

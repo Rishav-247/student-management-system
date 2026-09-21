@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit ? 'EDIT TEACHER // SMS' : 'ADD TEACHER // SMS'}">ADD TEACHER // SMS</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title" th:text="${isEdit ? 'EDIT TEACHER' : 'ADD FACULTY MEMBER'}">ADD FACULTY MEMBER</h1>
+                    <div class="page-subtitle">03 // FACULTY ROSTER ENTRY</div>
+                </div>
+                <div>
+                    <a th:href="@{/teachers}" class="btn-brutal">← BACK TO LIST</a>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form th:action="@{/teachers/save}" th:object="${teacherDto}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="teacherId">TEACHER ID *</label>
+                            <input type="text" id="teacherId" th:field="*{teacherId}" class="form-control-brutal mono" placeholder="e.g. TCH2026001" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('teacherId')}" th:errors="*{teacherId}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">EMAIL ADDRESS *</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-control-brutal mono" placeholder="turing@university.edu" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">FIRST NAME *</label>
+                            <input type="text" id="firstName" th:field="*{firstName}" class="form-control-brutal" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">LAST NAME *</label>
+                            <input type="text" id="lastName" th:field="*{lastName}" class="form-control-brutal" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="departmentId">DEPARTMENT</label>
+                            <select id="departmentId" th:field="*{departmentId}" class="form-control-brutal mono">
+                                <option value="">-- UNASSIGNED --</option>
+                                <option th:each="d : ${departments}" th:value="${d.id}" th:text="${d.code + ' - ' + d.name}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="designation">DESIGNATION *</label>
+                            <input type="text" id="designation" th:field="*{designation}" class="form-control-brutal" placeholder="e.g. Professor, Head of Dept" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="qualification">QUALIFICATION *</label>
+                            <input type="text" id="qualification" th:field="*{qualification}" class="form-control-brutal" placeholder="e.g. Ph.D. in Computer Science" required>
+                            <span class="form-error" th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="specialization">SPECIALIZATION / DOMAIN</label>
+                            <input type="text" id="specialization" th:field="*{specialization}" class="form-control-brutal" placeholder="e.g. Distributed Operating Systems">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="joiningDate">JOINING DATE</label>
+                            <input type="date" id="joiningDate" th:field="*{joiningDate}" class="form-control-brutal mono">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="phone">CONTACT PHONE</label>
+                            <input type="text" id="phone" th:field="*{phone}" class="form-control-brutal mono" placeholder="+1-555-0200">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 16px; border-top: var(--border-width) solid var(--border-main); padding-top: 24px;">
+                        <button type="submit" class="btn-brutal btn-brutal-primary" style="padding: 12px 28px;">
+                            [ SAVE TEACHER RECORD ]
+                        </button>
+                        <a th:href="@{/teachers}" class="btn-brutal" style="padding: 12px 28px;">
+                            [ CANCEL ]
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

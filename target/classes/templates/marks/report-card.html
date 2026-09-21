@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACADEMIC TRANSCRIPT // STUDENT MANAGEMENT SYSTEM</title>
+    <link rel="stylesheet" th:href="@{/css/brutalist.css}">
+</head>
+<body>
+<div class="app-container">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="main-wrapper">
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <div class="content-body">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Page Header -->
+            <div class="editorial-header">
+                <div>
+                    <h1 class="page-title">
+                        ACADEMIC<br/>
+                        TRANSCRIPT
+                    </h1>
+                    <div class="page-subtitle">
+                        OFFICIAL EVALUATION RECORD // SEMESTER <span th:text="${reportCard.semester}">7</span> (<span th:text="${reportCard.academicYear}">2025-2026</span>)
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <button onclick="window.print()" class="btn-brutal btn-brutal-lime">PRINT TRANSCRIPT</button>
+                    <a th:href="@{'/students/profile/' + ${reportCard.student.id}}" class="btn-brutal">STUDENT PROFILE</a>
+                    <a th:href="@{/marks}" class="btn-brutal">← BACK</a>
+                </div>
+            </div>
+
+            <!-- Student Metadata Box -->
+            <div class="table-container" style="padding: 24px; margin-bottom: 24px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div>
+                        <div class="stat-label">CANDIDATE ID</div>
+                        <div class="mono font-weight-bold" style="font-size: 16px; margin-top: 4px;" th:text="${reportCard.student.studentId}">CS20260041</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">CANDIDATE NAME</div>
+                        <div style="font-size: 16px; font-weight: 700; margin-top: 4px;" th:text="${reportCard.student.fullName}">RISHAV THAKUR</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">DEPARTMENT</div>
+                        <div style="font-size: 14px; font-weight: 700; margin-top: 4px;" th:text="${reportCard.student.departmentName}">Cyber Security</div>
+                    </div>
+                    <div>
+                        <div class="stat-label">DEGREE PROGRAM</div>
+                        <div style="font-size: 14px; font-weight: 700; margin-top: 4px;" th:text="${reportCard.student.courseName}">B.Tech in Cyber Security</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oversized Grade & Result Highlights -->
+            <div class="stats-grid" style="margin-bottom: 32px;">
+                <div class="stat-box" style="background-color: var(--bg-dark); color: var(--text-inverted);">
+                    <div class="stat-num-tag" style="color: var(--accent-lime);">OVERALL PERCENTAGE</div>
+                    <div class="stat-value" style="color: var(--text-inverted);" th:text="${reportCard.percentage + '%'}">92.00%</div>
+                    <div class="stat-label" style="color: var(--accent-lime);">CUMULATIVE SCORE</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">LETTER GRADE</div>
+                    <div class="stat-value" style="color: var(--text-main);" th:text="${reportCard.overallGrade}">A+</div>
+                    <div class="stat-label">ACADEMIC DISTINCTION</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">TOTAL MARKS</div>
+                    <div class="stat-value" style="font-size: 36px;" th:text="${reportCard.totalMarksObtained + ' / ' + reportCard.maxTotalMarks}">184 / 200</div>
+                    <div class="stat-label">AGGREGATE SCORING</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-num-tag">SEMESTER STANDING</div>
+                    <div class="stat-value" style="font-size: 36px;"
+                         th:style="${reportCard.overallResult == 'PASS' ? 'color: #00AA00;' : 'color: var(--accent-red);'}"
+                         th:text="${reportCard.overallResult}">PASS</div>
+                    <div class="stat-label">PROMOTED TO NEXT TERM</div>
+                </div>
+            </div>
+
+            <!-- Subject Breakdown Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <span class="table-title">MODULAR GRADE BREAKDOWN</span>
+                </div>
+                <table class="brutal-table">
+                    <thead>
+                        <tr>
+                            <th>CODE</th>
+                            <th>SUBJECT MODULE</th>
+                            <th>INTERNAL (20)</th>
+                            <th>ASSIGNMENT (20)</th>
+                            <th>PRACTICAL (20)</th>
+                            <th>FINAL (40)</th>
+                            <th>TOTAL (100)</th>
+                            <th>GRADE</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="m : ${reportCard.subjectMarks}">
+                            <td class="mono font-weight-bold" th:text="${m.subjectCode}">CS702</td>
+                            <td style="font-weight: 700;" th:text="${m.subjectName}">Network Security & Cryptography</td>
+                            <td class="mono" th:text="${m.internalMarks}">18.50</td>
+                            <td class="mono" th:text="${m.assignmentMarks}">19.00</td>
+                            <td class="mono" th:text="${m.practicalMarks}">18.00</td>
+                            <td class="mono" th:text="${m.finalExamMarks}">36.50</td>
+                            <td class="mono font-weight-bold" th:text="${m.totalMarks}">92.00</td>
+                            <td><span class="badge-brutal badge-lime font-weight-bold" th:text="${m.grade}">A+</span></td>
+                            <td>
+                                <span class="badge-brutal" th:classappend="${m.status.name() == 'PASS' ? 'badge-pass' : 'badge-fail'}" th:text="${m.status}">PASS</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(reportCard.subjectMarks)}">
+                            <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-muted); font-family: var(--font-mono);">
+                                NO EVALUATED SUBJECT MARKS FOUND FOR THIS TERM.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="padding: 24px; border: var(--border-width) solid var(--border-main); background: var(--bg-surface); margin-top: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div class="mono" style="font-size: 11px;">
+                    ISSUED BY: OFFICE OF ACADEMIC OPERATIONS & REGISTRY<br/>
+                    AUTHENTICATION HASH: <span class="font-weight-bold">SHA256-VERIFIED</span>
+                </div>
+                <div class="mono" style="font-size: 11px; text-align: right;">
+                    OFFICIAL UNIVERSITY SEAL // 2026<br/>
+                    CONTROLLER OF EXAMINATIONS
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
