@@ -15,6 +15,11 @@
     --border-main: #111111;
     --border-width: 2px;
     --border-thin: 1px;
+    --shadow-color: #111111;
+    --table-hover: #FAF8F5;
+    --table-border: #DDDDDD;
+    --nav-hover: #E8E5DD;
+    --stat-border: #CCCCCC;
     
     /* Accents */
     --accent-red: #FF3B30;
@@ -28,6 +33,25 @@
     
     --sidebar-width: 280px;
     --header-height: 64px;
+}
+
+[data-theme="dark"] {
+    --bg-canvas: #0D0E12;
+    --bg-surface: #17181E;
+    --bg-dark: #242630;
+    --text-main: #F5F3EE;
+    --text-muted: #9DA1AD;
+    --text-inverted: #111111;
+    --border-main: #444856;
+    --shadow-color: #000000;
+    --table-hover: #1E2028;
+    --table-border: #2B2E3A;
+    --nav-hover: #22242D;
+    --stat-border: #3A3D4A;
+    
+    --accent-red: #FF453A;
+    --accent-lime: #D9FF00;
+    --accent-blue: #4D88FF;
 }
 
 /* Global Reset */
@@ -147,7 +171,7 @@ a {
 }
 
 .nav-link:hover {
-    background-color: #E8E5DD;
+    background-color: var(--nav-hover);
     border-left-color: var(--border-main);
 }
 
@@ -155,6 +179,10 @@ a {
     background-color: var(--bg-dark);
     color: var(--text-inverted);
     border-left-color: var(--accent-red);
+}
+
+[data-theme="dark"] .nav-link.active {
+    color: #FFFFFF;
 }
 
 .nav-link.active .nav-num {
@@ -375,7 +403,7 @@ a {
     font-size: 10px;
     margin-top: 12px;
     padding-top: 8px;
-    border-top: 1px dashed #CCCCCC;
+    border-top: 1px dashed var(--stat-border);
     color: var(--text-muted);
 }
 
@@ -383,7 +411,7 @@ a {
 .table-container {
     background-color: var(--bg-surface);
     border: var(--border-width) solid var(--border-main);
-    box-shadow: 4px 4px 0px var(--border-main);
+    box-shadow: 4px 4px 0px var(--shadow-color);
     margin-bottom: 32px;
     overflow-x: auto;
 }
@@ -396,6 +424,10 @@ a {
     justify-content: space-between;
     align-items: center;
     border-bottom: var(--border-width) solid var(--border-main);
+}
+
+[data-theme="dark"] .table-header-bar {
+    color: #FFFFFF;
 }
 
 .table-title {
@@ -426,13 +458,13 @@ a {
 
 .brutal-table td {
     padding: 14px 16px;
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1px solid var(--table-border);
     font-size: 13px;
     vertical-align: middle;
 }
 
 .brutal-table tbody tr:hover {
-    background-color: #FAF8F5;
+    background-color: var(--table-hover);
 }
 
 .brutal-table tbody tr:last-child td {

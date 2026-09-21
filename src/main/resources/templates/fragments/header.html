@@ -10,6 +10,9 @@
     </div>
 
     <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn-brutal btn-brutal-sm mono" title="Toggle Dark/Light Theme" type="button" style="display: inline-flex; align-items: center; gap: 6px;">
+            <span id="theme-icon">🌙</span> <span id="theme-text">DARK</span>
+        </button>
         <span class="date-tag mono" th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">2026-09-21</span>
         <a th:href="@{/students/new}" class="btn-brutal btn-brutal-sm btn-brutal-primary">+ ADD STUDENT</a>
     </div>
